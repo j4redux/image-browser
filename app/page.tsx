@@ -4,6 +4,8 @@ import ImageGrid from '@/components/ImageGrid';
 const IMAGES_PER_PAGE = 30;
 const INITIAL_PAGE = 1;
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   // Server-side fetch for initial page load with revalidation
   const initialImages = await fetchPicsumImages(
@@ -11,7 +13,7 @@ export default async function Home() {
       page: INITIAL_PAGE,
       limit: IMAGES_PER_PAGE,
     },
-    'force-cache'
+    'no-store'
   );
 
   return (
