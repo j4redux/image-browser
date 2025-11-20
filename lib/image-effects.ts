@@ -73,16 +73,44 @@ export function applyBlur(
 
 /**
  * Download an image from a data URL or regular URL
+ * For cross-origin URLs, fetches the image and converts to blob
  * @param imageUrl - URL or data URL of the image
  * @param filename - Desired filename for download
  */
-export function downloadImage(imageUrl: string, filename: string): void {
-  const link = document.createElement('a');
-  link.href = imageUrl;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+export async function downloadImage(
+  imageUrl: string,
+  filename: string
+): Promise<void> {
+  // If it's a data URL, download directly
+  if (imageUrl.startsWith('data:')) {
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    return;
+  }
+
+  // For regular URLs, fetch and convert to blob to handle CORS
+  try {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the blob URL after a short delay
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+  } catch (error) {
+    console.error('Download failed:', error);
+    throw new Error('Failed to download image');
+  }
 }
 
 /**

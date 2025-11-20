@@ -24,9 +24,21 @@ export default function ImageToolbar({
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDownload = () => {
-    const filename = `picsum-${imageId}-${author.replace(/\s+/g, '-').toLowerCase()}.jpg`;
-    downloadImage(imageUrl, filename);
+  const handleDownload = async () => {
+    setIsProcessing(true);
+    setError(null);
+
+    try {
+      const filename = `picsum-${imageId}-${author.replace(/\s+/g, '-').toLowerCase()}.jpg`;
+      await downloadImage(imageUrl, filename);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to download image';
+      setError(errorMessage);
+      console.error('Download error:', err);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleGrayscale = async () => {
