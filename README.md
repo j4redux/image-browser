@@ -4,14 +4,14 @@ A Next.js image browsing application with infinite scroll and client-side image 
 
 ## Features
 
-- 📸 **Infinite Scrolling Gallery** - Browse thousands of photos with automatic loading
-- 🎨 **Client-Side Image Effects** - Apply grayscale and blur filters in real-time
-- ⬇️ **Download Images** - Save images with proper filenames
-- 📱 **Responsive Design** - Mobile-first approach, works on all screen sizes
-- 🌙 **Dark Mode** - Automatic dark mode support
-- ⚡ **Server-Side Rendering** - Fast initial page loads with SEO optimization
-- 🔗 **Shareable Permalinks** - Direct links to individual images
-- ♿ **Accessible** - Semantic HTML, ARIA labels, keyboard navigation
+- **Infinite Scrolling Gallery** - Browse thousands of photos with automatic loading
+- **Client-Side Image Effects** - Apply grayscale and blur filters in real-time
+- **Download Images** - Save images with proper filenames
+- **Responsive Design** - Mobile-first approach, works on all screen sizes
+- **Dark Mode** - Automatic dark mode support
+- **Server-Side Rendering** - Fast initial page loads with SEO optimization
+- **Shareable Permalinks** - Direct links to individual images
+- **Accessible** - Semantic HTML, ARIA labels, keyboard navigation
 
 ## Tech Stack
 
