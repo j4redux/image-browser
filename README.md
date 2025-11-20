@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Image Browser
+
+A Next.js image browsing application with infinite scroll and client-side image manipulation.
+
+## Features
+
+- 📸 **Infinite Scrolling Gallery** - Browse thousands of photos with automatic loading
+- 🎨 **Client-Side Image Effects** - Apply grayscale and blur filters in real-time
+- ⬇️ **Download Images** - Save images with proper filenames
+- 📱 **Responsive Design** - Mobile-first approach, works on all screen sizes
+- 🌙 **Dark Mode** - Automatic dark mode support
+- ⚡ **Server-Side Rendering** - Fast initial page loads with SEO optimization
+- 🔗 **Shareable Permalinks** - Direct links to individual images
+- ♿ **Accessible** - Semantic HTML, ARIA labels, keyboard navigation
+
+## Tech Stack
+
+- **Framework:** [Next.js 16](https://nextjs.org) (App Router)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com)
+- **Language:** [TypeScript](https://www.typescriptlang.org)
+- **Image Processing:** Canvas API (no external dependencies)
+- **Image Source:** [Picsum Photos API](https://picsum.photos)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ and npm
+
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Create production build
+npm run build
 
-## Learn More
+# Start production server
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/
+  page.tsx              # Home page with infinite scroll grid
+  image/[id]/page.tsx   # Dynamic image details page
+  loading.tsx           # Loading skeleton
+  error.tsx             # Error boundary
+  
+components/
+  ImageGrid.tsx         # Infinite scroll container
+  ImageCard.tsx         # Individual image card with navigation
+  ImageViewer.tsx       # Full image display with state management
+  ImageToolbar.tsx      # Download/grayscale/blur action buttons
+  ImageMetadata.tsx     # Image details sidebar
+  
+lib/
+  picsum-api.ts         # Picsum Photos API client
+  image-effects.ts      # Canvas-based image manipulation utilities
+  
+types/
+  picsum.ts             # TypeScript type definitions
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How It Works
 
-## Deploy on Vercel
+### Infinite Scroll
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Uses the Intersection Observer API to detect when the user scrolls near the bottom of the page, triggering automatic loading of more images.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Image Manipulation
+
+All image effects (grayscale, blur) are processed client-side using the HTML5 Canvas API:
+
+1. Load the image with CORS enabled
+2. Draw it to a canvas element
+3. Apply pixel manipulation or CSS filters
+4. Export as a data URL for display/download
+
+### Download Functionality
+
+Downloads work by:
+- Fetching the image and converting to a Blob
+- Creating a temporary object URL
+- Triggering a download with the proper filename
+- Cleaning up the object URL to prevent memory leaks
+
+## API Integration
+
+This app uses the [Picsum Photos API](https://picsum.photos):
+
+- `/v2/list` - Paginated list of images
+- `/id/{id}/info` - Single image metadata (undocumented)
+- `/id/{id}/{width}/{height}` - Resized images on-the-fly
+
+## License
+
+MIT
