@@ -9,13 +9,20 @@ interface ImageCardProps {
   image: PicsumImage;
 }
 
+const CARD_OPTIMIZED_WIDTH = 600;
+const CARD_OPTIMIZED_HEIGHT = 400;
+
 export default function ImageCard({ image }: ImageCardProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // Calculate aspect ratio for responsive sizing
-  const aspectRatio = image.width / image.height;
-  const optimizedUrl = getOptimizedImageUrl(image.id, 600, 400);
+  // Use fixed aspect ratio matching optimized image dimensions
+  const aspectRatio = CARD_OPTIMIZED_WIDTH / CARD_OPTIMIZED_HEIGHT;
+  const optimizedUrl = getOptimizedImageUrl(
+    image.id,
+    CARD_OPTIMIZED_WIDTH,
+    CARD_OPTIMIZED_HEIGHT
+  );
 
   const handleLoad = () => {
     setIsLoading(false);
