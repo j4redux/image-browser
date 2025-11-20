@@ -3,6 +3,7 @@
 import { PicsumImage } from '@/types/picsum';
 import { getOptimizedImageUrl } from '@/lib/picsum-api';
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface ImageCardProps {
   image: PicsumImage;
@@ -26,7 +27,10 @@ export default function ImageCard({ image }: ImageCardProps) {
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800">
+    <Link
+      href={`/image/${image.id}`}
+      className="group relative block overflow-hidden rounded-lg bg-zinc-100 transition-transform hover:scale-[1.02] dark:bg-zinc-800"
+    >
       {/* Aspect ratio container */}
       <div
         className="relative w-full"
@@ -66,6 +70,6 @@ export default function ImageCard({ image }: ImageCardProps) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
