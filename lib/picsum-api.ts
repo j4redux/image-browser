@@ -61,7 +61,8 @@ export async function fetchSingleImage(
   imageId: string,
   cache: RequestCache = 'force-cache'
 ): Promise<PicsumImage> {
-  const url = `${PICSUM_API_BASE}/id/${imageId}/info`;
+  // Note: The info endpoint doesn't use /v2 prefix
+  const url = `https://picsum.photos/id/${imageId}/info`;
 
   try {
     const response = await fetch(url, { cache });

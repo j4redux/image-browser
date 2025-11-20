@@ -2,16 +2,18 @@
 
 ## Get Image Info
 
-Get information about a specific image by using the `/v2/id/{id}/info` endpoint.
+Get information about a specific image by using the `/id/{id}/info` endpoint.
+
+**Note:** This endpoint does NOT use the `/v2` prefix.
 
 ### Endpoint
 ```
-https://picsum.photos/v2/id/{id}/info
+https://picsum.photos/id/{id}/info
 ```
 
 ### Example Request
 ```
-https://picsum.photos/v2/id/237/info
+https://picsum.photos/id/237/info
 ```
 
 ### Response Format
