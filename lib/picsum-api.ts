@@ -5,20 +5,19 @@ const PICSUM_API_BASE = 'https://picsum.photos/v2';
 /**
  * Fetch a paginated list of images from Picsum Photos API
  * @param params - Page number and limit per page
+ * @param cache - Cache strategy for fetch request
  * @returns Array of image objects
  * @throws Error if API request fails
  */
 export async function fetchPicsumImages(
-  params: PicsumListParams
+  params: PicsumListParams,
+  cache: RequestCache = 'no-store'
 ): Promise<PicsumImage[]> {
   const { page, limit } = params;
   const url = `${PICSUM_API_BASE}/list?page=${page}&limit=${limit}`;
 
   try {
-    const response = await fetch(url, {
-      // Disable caching for fresh data
-      cache: 'no-store',
-    });
+    const response = await fetch(url, { cache });
 
     if (!response.ok) {
       throw new Error(
