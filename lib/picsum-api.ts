@@ -49,3 +49,39 @@ export function getOptimizedImageUrl(
 ): string {
   return `https://picsum.photos/id/${imageId}/${width}/${height}`;
 }
+
+/**
+ * Fetch details for a single image by ID
+ * @param imageId - Picsum image ID
+ * @param cache - Cache strategy for fetch request
+ * @returns Image object with metadata
+ * @throws Error if image not found or API request fails
+ */
+export async function fetchSingleImage(
+  imageId: string,
+  cache: RequestCache = 'force-cache'
+): Promise<PicsumImage> {
+  const url = `${PICSUM_API_BASE}/id/${imageId}/info`;
+
+  try {
+    const response = await fetch(url, { cache });
+
+    if (response.status === 404) {
+      throw new Error(`Image with ID "${imageId}" not found`);
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        `Picsum API error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data: PicsumImage = await response.json();
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Failed to fetch image details: Unknown error');
+  }
+}
