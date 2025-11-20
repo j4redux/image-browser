@@ -24,58 +24,44 @@ export default function ImageToolbar({
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDownload = async () => {
+  const executeWithErrorHandling = async (
+    operation: () => Promise<void>,
+    fallbackErrorMessage: string
+  ) => {
     setIsProcessing(true);
     setError(null);
 
     try {
-      const filename = `picsum-${imageId}-${author.replace(/\s+/g, '-').toLowerCase()}.jpg`;
-      await downloadImage(imageUrl, filename);
+      await operation();
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Failed to download image';
-      setError(errorMessage);
-      console.error('Download error:', err);
+      const message =
+        err instanceof Error ? err.message : fallbackErrorMessage;
+      setError(message);
+      console.error(fallbackErrorMessage, err);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const handleGrayscale = async () => {
-    setIsProcessing(true);
-    setError(null);
+  const handleDownload = () =>
+    executeWithErrorHandling(async () => {
+      const filename = `picsum-${imageId}-${author.replace(/\s+/g, '-').toLowerCase()}.jpg`;
+      await downloadImage(imageUrl, filename);
+    }, 'Failed to download image');
 
-    try {
+  const handleGrayscale = () =>
+    executeWithErrorHandling(async () => {
       const img = await loadImage(imageUrl);
       const grayscaleUrl = applyGrayscale(img);
       onImageChange(grayscaleUrl);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Failed to apply grayscale';
-      setError(errorMessage);
-      console.error('Grayscale error:', err);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+    }, 'Failed to apply grayscale');
 
-  const handleBlur = async () => {
-    setIsProcessing(true);
-    setError(null);
-
-    try {
+  const handleBlur = () =>
+    executeWithErrorHandling(async () => {
       const img = await loadImage(imageUrl);
       const blurredUrl = applyBlur(img, 10);
       onImageChange(blurredUrl);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Failed to apply blur';
-      setError(errorMessage);
-      console.error('Blur error:', err);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+    }, 'Failed to apply blur');
 
   return (
     <div className="space-y-4">
