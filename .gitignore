@@ -24,6 +24,18 @@
 .DS_Store
 *.pem
 
+# IDE and editor configs
+.cursor/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# MCP and tool configs
+.mcp.json
+opencode.json
+
 # debug
 npm-debug.log*
 yarn-debug.log*
