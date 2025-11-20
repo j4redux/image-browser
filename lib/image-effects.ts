@@ -19,27 +19,22 @@ export function applyGrayscale(imageElement: HTMLImageElement): string {
     throw new Error('Canvas context not available');
   }
 
-  // Set canvas dimensions to match image
   canvas.width = imageElement.naturalWidth;
   canvas.height = imageElement.naturalHeight;
 
-  // Draw original image
   ctx.drawImage(imageElement, 0, 0);
 
-  // Get image data
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
 
-  // Apply grayscale transformation
+  // Convert to grayscale using average method
   for (let i = 0; i < data.length; i += 4) {
     const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-    data[i] = avg; // Red
-    data[i + 1] = avg; // Green
-    data[i + 2] = avg; // Blue
-    // data[i + 3] is alpha channel, leave unchanged
+    data[i] = avg;
+    data[i + 1] = avg;
+    data[i + 2] = avg;
   }
 
-  // Put modified image data back
   ctx.putImageData(imageData, 0, 0);
 
   return canvas.toDataURL('image/jpeg', JPEG_QUALITY);
@@ -62,11 +57,9 @@ export function applyBlur(
     throw new Error('Canvas context not available');
   }
 
-  // Set canvas dimensions to match image
   canvas.width = imageElement.naturalWidth;
   canvas.height = imageElement.naturalHeight;
 
-  // Apply CSS filter blur via canvas
   ctx.filter = `blur(${radius}px)`;
   ctx.drawImage(imageElement, 0, 0);
 
@@ -83,7 +76,6 @@ export async function downloadImage(
   imageUrl: string,
   filename: string
 ): Promise<void> {
-  // If it's a data URL, download directly
   if (imageUrl.startsWith('data:')) {
     const link = document.createElement('a');
     link.href = imageUrl;
@@ -94,7 +86,7 @@ export async function downloadImage(
     return;
   }
 
-  // For regular URLs, fetch and convert to blob to handle CORS
+  // For cross-origin URLs, fetch and convert to blob
   try {
     const response = await fetch(imageUrl);
     const blob = await response.blob();

@@ -44,7 +44,6 @@ export default function ImageViewer({
 
   return (
     <div className="space-y-6">
-      {/* Image Container */}
       <div className="relative overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -81,7 +80,6 @@ export default function ImageViewer({
         )}
       </div>
 
-      {/* Toolbar */}
       <div className="space-y-4">
         <ImageToolbar
           imageUrl={currentImageUrl}
@@ -90,7 +88,6 @@ export default function ImageViewer({
           onImageChange={handleImageChange}
         />
 
-        {/* Reset Button (shown when image is modified) */}
         {currentImageUrl !== imageUrl && (
           <button
             onClick={handleReset}
