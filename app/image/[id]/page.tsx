@@ -9,6 +9,9 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+const DETAIL_IMAGE_WIDTH = 1200;
+const DETAIL_IMAGE_HEIGHT = 800;
+
 /**
  * Generate metadata for SEO
  */
@@ -43,8 +46,11 @@ export default async function ImageDetailsPage({ params }: PageProps) {
     notFound();
   }
 
-  // Generate optimized image URL (max 1200px width for details view)
-  const displayUrl = getOptimizedImageUrl(image.id, 1200, 800);
+  const displayUrl = getOptimizedImageUrl(
+    image.id,
+    DETAIL_IMAGE_WIDTH,
+    DETAIL_IMAGE_HEIGHT
+  );
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950">

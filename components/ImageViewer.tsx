@@ -10,6 +10,8 @@ interface ImageViewerProps {
   alt: string;
 }
 
+const MIN_ERROR_CONTAINER_HEIGHT = 400;
+
 export default function ImageViewer({
   imageUrl,
   imageId,
@@ -51,7 +53,10 @@ export default function ImageViewer({
         )}
 
         {hasError ? (
-          <div className="flex min-h-[400px] flex-col items-center justify-center gap-4">
+          <div
+            className="flex flex-col items-center justify-center gap-4"
+            style={{ minHeight: `${MIN_ERROR_CONTAINER_HEIGHT}px` }}
+          >
             <p className="text-zinc-600 dark:text-zinc-400">
               Failed to load image
             </p>

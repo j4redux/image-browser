@@ -2,6 +2,10 @@
  * Client-side image manipulation utilities using Canvas API
  */
 
+const JPEG_QUALITY = 0.95;
+const DEFAULT_BLUR_RADIUS = 10;
+const BLOB_CLEANUP_DELAY_MS = 100;
+
 /**
  * Apply grayscale filter to an image
  * @param imageElement - HTMLImageElement to convert
@@ -38,19 +42,18 @@ export function applyGrayscale(imageElement: HTMLImageElement): string {
   // Put modified image data back
   ctx.putImageData(imageData, 0, 0);
 
-  // Return as data URL
-  return canvas.toDataURL('image/jpeg', 0.95);
+  return canvas.toDataURL('image/jpeg', JPEG_QUALITY);
 }
 
 /**
  * Apply blur filter to an image
  * @param imageElement - HTMLImageElement to blur
- * @param radius - Blur radius (default: 10)
+ * @param radius - Blur radius in pixels
  * @returns Data URL of blurred image
  */
 export function applyBlur(
   imageElement: HTMLImageElement,
-  radius: number = 10
+  radius: number = DEFAULT_BLUR_RADIUS
 ): string {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -67,8 +70,7 @@ export function applyBlur(
   ctx.filter = `blur(${radius}px)`;
   ctx.drawImage(imageElement, 0, 0);
 
-  // Return as data URL
-  return canvas.toDataURL('image/jpeg', 0.95);
+  return canvas.toDataURL('image/jpeg', JPEG_QUALITY);
 }
 
 /**
@@ -105,8 +107,7 @@ export async function downloadImage(
     link.click();
     document.body.removeChild(link);
 
-    // Clean up the blob URL after a short delay
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), BLOB_CLEANUP_DELAY_MS);
   } catch (error) {
     console.error('Download failed:', error);
     throw new Error('Failed to download image');
