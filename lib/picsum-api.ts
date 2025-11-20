@@ -52,6 +52,10 @@ export function getOptimizedImageUrl(
 
 /**
  * Fetch details for a single image by ID
+ * 
+ * Uses the undocumented /id/{id}/info endpoint for fast single-image lookup.
+ * This is more efficient than paginating through the list endpoint.
+ * 
  * @param imageId - Picsum image ID
  * @param cache - Cache strategy for fetch request
  * @returns Image object with metadata
@@ -61,17 +65,15 @@ export async function fetchSingleImage(
   imageId: string,
   cache: RequestCache = 'force-cache'
 ): Promise<PicsumImage> {
-  // Note: The info endpoint doesn't use /v2 prefix
   const url = `https://picsum.photos/id/${imageId}/info`;
 
   try {
     const response = await fetch(url, { cache });
 
-    if (response.status === 404) {
-      throw new Error(`Image with ID "${imageId}" not found`);
-    }
-
     if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error(`Image with ID "${imageId}" not found`);
+      }
       throw new Error(
         `Picsum API error: ${response.status} ${response.statusText}`
       );
@@ -83,6 +85,6 @@ export async function fetchSingleImage(
     if (error instanceof Error) {
       throw error;
     }
-    throw new Error('Failed to fetch image details: Unknown error');
+    throw new Error('Failed to fetch image details');
   }
 }
